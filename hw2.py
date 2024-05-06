@@ -110,12 +110,12 @@ class Binary_Classifier(object):
                         error = prediction - temp_ground_truth
                         total_error += error ** 2
                         w_gradient = (temp_data.T * error) + l * w
-                        """
+                        
                         grad_norm = np.linalg.norm(w_gradient, ord=1)
                         clip_threshold = 100  # Adjust as needed
                         if grad_norm > clip_threshold:
                             w_gradient = w_gradient * clip_threshold / grad_norm
-                        """
+                        
                         w -= a * (w_gradient)                    
                     loss = total_error / x_augmented.shape[0]
 
@@ -179,7 +179,7 @@ model = Binary_Classifier(train_data, train_target)
 
 # Logistic Regression
 logistic_start = time.time()
-model.logistic_training([10**-10, 10], [10e-10, 1e10], 300, 1e-5)
+model.logistic_training([10**-10, 10], [10e-10, 1e10], 150, 0.02)
 logistic_end = time.time()
 # SVM
 svm_start = time.time()
