@@ -76,8 +76,8 @@ class Binary_Classifier(object):
     def SGD_Solve(self, alpha, lam, nepoch, epsilon, train_X, train_Y):
         best_weights = None
         best_error = 100000
-        alpha_array = np.geomspace(alpha[0], alpha[1], num=5)
-        lam_array = np.geomspace(lam[0], lam[1], num=5)
+        alpha_array = np.geomspace(alpha[0], alpha[1], num=10)
+        lam_array = np.geomspace(lam[0], lam[1], num=10)
         x_augmented = np.concatenate((train_X, np.ones((train_X.shape[0], 1))), axis=1)
         for a in alpha_array:
             for l in lam_array:
