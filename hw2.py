@@ -120,7 +120,7 @@ class Binary_Classifier(object):
                     loss = total_error / x_augmented.shape[0]
 
                     
-                    #print(f"Epoch {i+1}/{nepoch}, MSE: {loss}, alpha: {a}, lambda: {l}")
+                    print(f"Epoch {i+1}/{nepoch}, MSE: {loss}, alpha: {a}, lambda: {l}")
 
                     if(total_error < best_error):
                         #print(total_error, self.best_error)
@@ -139,7 +139,8 @@ class Binary_Classifier(object):
     def logistic_testing(self, testX):
         test_X = np.concatenate((testX, np.ones((testX.shape[0], 1))), axis=1)
         prediction = test_X @ self.weights_loss
-        return np.array([prediction]).T
+        result = (prediction >= 0.5).astype(int)
+        return np.array([result]).T
 
     def svm_training(self, gamma, C):
         """
@@ -185,5 +186,5 @@ svm_start = time.time()
 model.svm_training([1e-9, 1000], [0.01, 1e10])
 svm_end = time.time()
 
-model.svm_testing(test_data)
-model.logistic_testing(test_data)
+#print(model.svm_testing(test_data))
+#print(model.logistic_testing(test_data))
