@@ -3,6 +3,7 @@ from sklearn.datasets import load_breast_cancer
 from sklearn.svm import SVC
 import numpy as np
 from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import accuracy_score
 
 
 
@@ -21,7 +22,6 @@ class Binary_Classifier(object):
         self.best_error = 100000
         self.best_accuracy = 0
         self.svm_classifier = None
-        self.best_accuracy1 = 0
 
     def logistic_training(self, alpha, lam, nepoch, epsilon):
         """
@@ -76,8 +76,8 @@ class Binary_Classifier(object):
     def SGD_Solve(self, alpha, lam, nepoch, epsilon, train_X, train_Y):
         best_weights = None
         best_error = 100000
-        alpha_array = np.geomspace(alpha[0], alpha[1], num=3)
-        lam_array = np.geomspace(lam[0], lam[1], num=3)
+        alpha_array = np.geomspace(alpha[0], alpha[1], num=5)
+        lam_array = np.geomspace(lam[0], lam[1], num=5)
         x_augmented = np.concatenate((train_X, np.ones((train_X.shape[0], 1))), axis=1)
         for a in alpha_array:
             for l in lam_array:
@@ -154,16 +154,7 @@ class Binary_Classifier(object):
         Please consult sklearn.svm.SVC documents to see how to use its "fit" and "predict" functions. 
         https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html
         """
-        param_grid = {
-            'C': np.geomspace(C[0], C[1], num=2),
-            'gamma': np.geomspace(gamma[0], gamma[1], num=2)
-        }
-        svm_classifier = SVC(kernel='linear')
-        grid_search = GridSearchCV(svm_classifier, param_grid, cv=3, scoring='accuracy')
-        grid_search.fit(self.x, self.y)
-        best_params = grid_search.best_params_
-        best_score = grid_search.best_score_
-        self.svm_classifier = SVC(kernel='linear', **best_params)
+        self.svm_classifier = SVC(kernel='linear', C = 0.1, gamma = 'scale')
         self.svm_classifier.fit(self.x, self.y)
 
     def svm_testing(self, testX):
@@ -189,7 +180,6 @@ model = Binary_Classifier(train_data, train_target)
 logistic_start = time.time()
 model.logistic_training([1e-8, 1e-7], [200,1500], 2000, 1e-5)
 logistic_end = time.time()
-
 # SVM
 svm_start = time.time()
 model.svm_training([1e-9, 1000], [0.01, 1e10])
