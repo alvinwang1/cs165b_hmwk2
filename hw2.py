@@ -120,7 +120,7 @@ class Binary_Classifier(object):
                     loss = total_error / x_augmented.shape[0]
 
                     
-                    print(f"Epoch {i+1}/{nepoch}, MSE: {loss}, alpha: {a}, lambda: {l}")
+                    #print(f"Epoch {i+1}/{nepoch}, MSE: {loss}, alpha: {a}, lambda: {l}")
 
                     if(total_error < best_error):
                         #print(total_error, self.best_error)
@@ -179,7 +179,7 @@ model = Binary_Classifier(train_data, train_target)
 
 # Logistic Regression
 logistic_start = time.time()
-model.logistic_training([1e-8, 1e-7], [1500,5000], 500, 1e-5)
+model.logistic_training([10**-10, 10], [10e-10, 1e10], 300, 1e-5)
 logistic_end = time.time()
 # SVM
 svm_start = time.time()
