@@ -103,18 +103,19 @@ class Binary_Classifier(object):
                         break
 
                     total_error = 0.0
-                    for j in range(x_augmented.shape[0]):
-                        temp_data = x_augmented[j]
-                        temp_ground_truth = train_Y[j]
-                        prediction = temp_data @ w
+                    for j in range(0, x_augmented.shape[0], 32):
+                        temp_data = x_augmented[j:j+32]
+                        temp_ground_truth = train_Y[j:j+32]
+                        prediction = self.sigmoid(temp_data @ w)
                         error = prediction - temp_ground_truth
-                        total_error += error ** 2
-                        w_gradient = (temp_data.T * error) + l * w
+                        total_error += np.sum(error ** 2)
+                        w_gradient = (temp_data.T @ error) + l * w
                         
                         grad_norm = np.linalg.norm(w_gradient, ord=1)
-                        clip_threshold = 100  # Adjust as needed
+                        clip_threshold = 1000  # Adjust as needed
                         if grad_norm > clip_threshold:
                             w_gradient = w_gradient * clip_threshold / grad_norm
+                        
                         
                         w -= a * (w_gradient)                    
                     loss = total_error / x_augmented.shape[0]
@@ -129,7 +130,10 @@ class Binary_Classifier(object):
                 #print(f"weights: {self.weights}")
                 #print(f"bias:{self.bias}")
         return best_weights
-    
+
+    def sigmoid(self, x):
+        return 1 / (1 + np.exp(-x))
+
     def shuffle_data(self, x, y):
         """Function to shuffle data"""
         indices = np.arange(len(x))
