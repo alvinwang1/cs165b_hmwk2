@@ -76,8 +76,8 @@ class Binary_Classifier(object):
     def SGD_Solve(self, alpha, lam, nepoch, epsilon, train_X, train_Y):
         best_weights = None
         best_error = 100000
-        alpha_array = np.geomspace(alpha[0], alpha[1], num=5)
-        lam_array = np.geomspace(lam[0], lam[1], num=5)
+        alpha_array = np.geomspace(alpha[0], alpha[1], num=1)
+        lam_array = np.geomspace(lam[0], lam[1], num=1)
         x_augmented = np.concatenate((train_X, np.ones((train_X.shape[0], 1))), axis=1)
         for a in alpha_array:
             for l in lam_array:
@@ -137,8 +137,8 @@ class Binary_Classifier(object):
         return x[indices], y[indices]
 
     def logistic_testing(self, testX):
-        test_X = np.concatenate((test_X, np.ones((test_X.shape[0], 1))), axis=1)
-        prediction = testX @ self.weights_loss
+        test_X = np.concatenate((testX, np.ones((testX.shape[0], 1))), axis=1)
+        prediction = test_X @ self.weights_loss
         return np.array([prediction]).T
 
     def svm_training(self, gamma, C):
@@ -184,3 +184,6 @@ logistic_end = time.time()
 svm_start = time.time()
 model.svm_training([1e-9, 1000], [0.01, 1e10])
 svm_end = time.time()
+
+model.svm_testing(test_data)
+model.logistic_testing(test_data)
