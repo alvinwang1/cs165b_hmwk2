@@ -76,8 +76,8 @@ class Binary_Classifier(object):
     def SGD_Solve(self, alpha, lam, nepoch, epsilon, train_X, train_Y):
         best_weights = None
         best_error = 100000
-        alpha_array = np.geomspace(alpha[0], alpha[1], num=5)
-        lam_array = np.geomspace(lam[0], lam[1], num=5)
+        alpha_array = np.geomspace(alpha[0], alpha[1], num=3)
+        lam_array = np.geomspace(lam[0], lam[1], num=3)
         x_augmented = np.concatenate((train_X, np.ones((train_X.shape[0], 1))), axis=1)
         for a in alpha_array:
             for l in lam_array:
@@ -178,7 +178,7 @@ model = Binary_Classifier(train_data, train_target)
 
 # Logistic Regression
 logistic_start = time.time()
-model.logistic_training([1e-8, 1e-7], [200,1500], 2000, 1e-5)
+model.logistic_training([1e-8, 1e-7], [1500,5000], 500, 1e-5)
 logistic_end = time.time()
 # SVM
 svm_start = time.time()
