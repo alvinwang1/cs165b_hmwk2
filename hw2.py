@@ -183,7 +183,7 @@ model = Binary_Classifier(train_data, train_target)
 
 # Logistic Regression
 logistic_start = time.time()
-model.logistic_training([10**-10, 10], [10e-10, 1e10], 150, 0.02)
+model.logistic_training([10**-10, 10], [10e-10, 1e10], 300, 0.02)
 logistic_end = time.time()
 # SVM
 svm_start = time.time()
